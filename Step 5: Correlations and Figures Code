@@ -13,11 +13,9 @@ test <- read.csv(file = "Dataset.csv", header = T, stringsAsFactors = F)
 
 # Create figure
 
-
 set.seed(51)
 
 x <- test$Dhat4
-
 y <- test$FOB_per100
 
 range(y)
@@ -25,9 +23,7 @@ range(y)
 newdat <- data.frame(x = seq(-1,1, 0.01))
 
 y_logit <- log(y / (1 - y))
-
 m2 <- lm(y_logit ~ x)
-
 m2_pred <-  predict(m2,newdata = newdat, interval = "confidence")
 
 # convert back to real scale
@@ -51,7 +47,6 @@ colors <- colors[factor(test$Prey)]
 shapes <- c(15, 16, 17, 18)
 shapes <- shapes[factor(test$Grid)]
 
-
 points(
   x = x,
   y = y,
@@ -59,7 +54,6 @@ points(
   col = colors,
   cex = 1.2
   )
-
 
 lines(
   x = newdat$x,
@@ -75,8 +69,5 @@ lines(
   lwd = 2
 )
 
-
-legend(0.2,0.65, legend = c("Birds", "Cottontail Rabbits", "Nocturnal Rodents", "Squirrels"), pch = 16, col = c("#999999", "#E69F00", "#56B4E9", "#009E73"), bty = "n")
-
-legend(-0.03,0.65, legend = c("FR Wildland", "FR WUI", "WS Exurban", "WS Wildland"), pch = c(15, 16, 17, 18), bty = "n")
-
+#### Pearson's Correlations
+cor.test(x, y_logit, method=c("pearson"))
