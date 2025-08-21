@@ -5,7 +5,7 @@ library (RMark)
 #### Run for each predator/prey interaction assessed, for each strata. Can also incorporate covariates, if needed
 
 # Input capture history file
-occupancy_input_file = import.chdata("C:\\filepath.txt",header = TRUE, field.names = NULL, field.types = c("f", "n"))
+occupancy_input_file = import.chdata("C:\\filepath\\capturehistories.txt",header = TRUE, field.names = NULL, field.types = c("f", "n"))
 
 set.seed(1)
 
