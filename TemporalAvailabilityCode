@@ -4,5 +4,37 @@ library(beepr)
 library(dplyr)
 
 #### Upload activity data and organize as needed ####
-
 activity_data2 = read.table("C:\\filepath\\activity.txt", header = TRUE)
+
+### Convert time column to radians
+timeRad = activity_data2$Time01 * 2 * pi
+
+## Subset data to only include independent occurrences (e.g., >1 hr apart) for each species in each strata assessed for comparisons. Also need to assess the minimum number of observations in each comparison, so as to ensure the proper Dhat value is used/to make sure the analyses can be conducted. As an example, I will specify bobcats vs. cottontails in the Front Range Urban-Wildland Interface grid. However, this should be done for every interaction in every strata being assessed.
+
+# Bobcats:
+
+bobcat_OVERALLActivity = timeRad[activity_data2$CommonName == 'Bobcat' & activity_data2$TimeLess1Hour == '0' & activity_data2$Grid == 'UrbanInterface']
+
+min(length(bobcat_OVERALLActivity))
+
+# Cottontails:
+Leporidae_OVERALLActivity = timeRad[activity_data2$CommonName == 'Cottontail_Rabbit' & activity_data2$TimeLess1Hour == '0'& activity_data2$Grid == 'UrbanInterface']
+
+min(length(bobcat_OVERALLActivity), length(Leporidae_OVERALLActivity))
+
+# Activity overlap between bobcats and cottontail rabbits in the FR - UWI, running a bootstrap of 10,000
+
+set.seed(1)
+bobcat_all_boot = resample(bobcat_OVERALLActivity, 10000)
+leporidae_all_boot = resample(Leporidae_OVERALLActivity, 10000)
+
+bobcat_leporidae_overlap_boot = bootEst(bobcat_all_boot, leporidae_all_boot, adjust = c(1, 1, 1)); beep(8)
+dim(bobcat_leporidae_overlap_boot)
+
+bobcatlep_BSmean = colMeans(bobcat_leporidae_overlap_boot)
+bobcatlep_BSmean
+
+# confidence interval around mean
+tmp = bobcat_leporidae_overlap_boot[ ,2] # Use 2 for Dhat4 and 1 for Dhat1 (if 20-50 observations, based on the minimum overlap)
+bootCIlogit(bobcat_leporidae_overlap_boot[2], tmp) # basic0 is the 95% CI
+
