@@ -9,14 +9,14 @@ library(dplyr)
 #### The following should be conducted for each comparison in each strata assessed, as well as for both biomas (FOB) and frequency of occurrence (FO), using the top model for each comparison found in Step 4. Across all sites and using FOB is demonstrated below:
 
 # Input data set
-test <- read.csv(file = "Dataset.csv", header = T, stringsAsFactors = F)
+data <- read.csv(file = "Dataset.csv", header = T, stringsAsFactors = F)
 
 # Create figure
 
 set.seed(51)
 
-x <- test$Dhat4
-y <- test$FOB_per100
+x <- data$Dhat4
+y <- data$FOB_per100
 
 range(y)
 
