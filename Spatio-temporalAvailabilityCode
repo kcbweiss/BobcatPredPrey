@@ -1,0 +1,34 @@
+#### Running simulations that incorporate the spatial and temporal availability estimates, while incorporating their respective errors, to derive a spatio-temporal availability metric 
+
+#### Install packages ####
+library(msm)
+
+# Run simulations for each predator/prey comparison in each strata assessed
+
+set.seed(1)
+
+Psi = rtnorm(10000, 0.7826592, 0.09459136, lower = 0, upper = 1) #Bootstrap, Mean overlap, SE - occupancy
+Delta = rtnorm(10000, 0.8404515, 0.03369602041, lower = 0, upper = 1) #Bootstrap, Mean overlap, SE - activity
+
+Overlap_BobLag_WSWild = c() # Empty vector to fill with multiplied values
+
+for (k in 1:10000) {
+  Overlap_BobLag_WSWild[k] = Psi[k] * Delta[k]
+}
+
+
+summary(Overlap_BobLag_WSWild)
+
+sd<- sqrt(var(Overlap_BobLag_WSWild)) 
+se <- sd(Overlap_BobLag_WSWild)/sqrt(length(Overlap_BobLag_WSWild))
+mean <- mean(Overlap_BobLag_WSWild)
+Z = 1.960 #95% CI
+
+#95% CI = 1.960 Z-score
+ucl <- mean + Z*(sd/(sqrt(length(Overlap_BobLag_WSWild))))
+lcl <- mean - Z*(sd/(sqrt(length(Overlap_BobLag_WSWild))))
+
+mean
+lcl
+ucl
+se
