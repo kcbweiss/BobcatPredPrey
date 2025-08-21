@@ -6,7 +6,7 @@ The following code utilizes the following steps:
 2. Calculaing the activity overlap of the predator and each prey species (temporal availability code)
 3. Running simulations where the value from steps 1 and 2 are multiplied together, while incoporating their respective error estimates (spatio-temporal availability code)
 4. Running logit regression models to assess which model of availability (in space, time, or space/time) best predicts prey consumption, as defined via the frequency of scats that contain prey remains in the same study areas. Note: logit regression used, since scat values are constrained between 0-1 (0%-100% of scats) (Logit Linear Models Code)
-5. Running Pearson's correlations to assess the relationship between prey consumption and prey availability
+5. Running Pearson's correlations to assess the relationship between prey consumption and prey availability (Correlations and Figures Code)
 
-Note: Jesse Lewis (ASU), Austin Green (Sageland Collaborative and University of Utah), and Mason Fidino (Lincoln Park Zoo) helped with various aspects of the presented code
+Note: Jesse Lewis (ASU), Austin Green (Sageland Collaborative and University of Utah), and Mason Fidino (Lincoln Park Zoo) helped with various aspects of writing and troubleshooting the presented code
 
