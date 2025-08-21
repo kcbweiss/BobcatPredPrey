@@ -1,0 +1,38 @@
+#### Install pacakages ####
+library(AICcmodavg)
+library(dplyr) # needed if subsetting to specific sites within the dataset
+
+#### Input dataset that includes PsiAB (from Spatial Availability Code, listed in the code below as PsiAB), Dhat4 or Dhat1 (from Temporal Availability Code, listed in the code below as Dhat4), and the mean value from the Spatio-temporal Availability Code (listed as PsiAB_Dhat). Note: ST in the code refers to spatio-temporal availability, T represents temporal availability, and S represents spatial availability. This data set should also include the data for both the frequency of occurrence (FO) and biomass estimates (FOB) for the collected scats
+
+test <- read.csv(file = "Dataset.csv", header = T, stringsAsFactors = F)
+
+set.seed(51)
+
+
+# Logit transform to account for how FO and FOB values cannot be less than 0 or greater than 1
+FO_logit <- log(test$FO / (1 - test$FO))
+FOB_logit <- log(test$FOB) / (1-test$FOB)
+
+# Add FOC_logit to dataframe
+test$FO_logit <- FO_logit
+test$FOB_logit <- FOB_logit
+
+#### Run the following analyses and comparisons for each study area or strata assessed for both FO and FOB. As an example, only FOB is shown below for assessing across all sites
+
+# Across sites
+
+ST_BM_All <- lm(FOB_logit ~ PsiAB_Dhat, data = test)
+S_BM_All <- lm(FOB_logit ~ PsiAB, data = test)
+T_BM_All <- lm(FOB_logit ~ Dhat4, data = test)
+
+ST_BM_All_lmSUM <- summary(ST_BM_All)
+S_BM_All_lmSUM <- summary(S_BM_All)
+T_BM_All_lmSUM <- summary(T_BM_All)
+
+models <- list(ST_BM_All, S_BM_All, T_BM_All)
+mod.names <- c("ST_BM_All", "S_BM_All", "T_BM_All")
+aictab(cand.set = models, modnames = mod.names)
+
+# Get the summary of the top model
+T_BM_All_lmSUM
+
