@@ -12,40 +12,38 @@ set.seed(1)
 # 1 Model Dot Model - Predator occupancy affects prey occupancy
 
 PsiA.Dot_PsiBA.Dot_PsiBa.Dot_pA.Dot_pB.Dot_rA.Dot_rBA.Dot_rBa.Dot = mark(occupancy_input_file, model = "2SpecConOccup", 
-                                                                         model.parameters = list(PsiA = list(formula = ~1, link = "sin"),  # occupancy species A
-                                                                                                 PsiBA = list(formula = ~1, link = "sin"),  # occupancy species B, given A present
-                                                                                                 PsiBa = list(formula = ~1, link = "sin"),  # occupancy species B, given A absent
-                                                                                                 pA = list(formula = ~1),  # detection probability species A, given B absent
-                                                                                                 pB = list(formula = ~1),  # detection probability species B, given A absent
-                                                                                                 rA = list(formula = ~1),  # detection probability species A, given both A and B present
-                                                                                                 rBA = list(formula = ~1),  # detection probability species B, given both A and B present and A detected
-                                                                                                 rBa = list(formula = ~1)  # detection probability species B, given both A and B present and A not detected
+                                                                         model.parameters = list(PsiA = list(formula = ~1, link = "sin"),
+                                                                                                 PsiBA = list(formula = ~1, link = "sin"),
+                                                                                                 PsiBa = list(formula = ~1, link = "sin"),
+                                                                                                 pA = list(formula = ~1),
+                                                                                                 pB = list(formula = ~1),
+                                                                                                 rA = list(formula = ~1),
+                                                                                                 rBA = list(formula = ~1),
+                                                                                                 rBa = list(formula = ~1)
                                                                          ), options = "SIMANNEAL")  # end statement
 
 
 # 2 Model PsiBA = PsiBa - Predator occupancy does not affect prey occupancy
 
 PsiA.Dot_PsiBA.Dot.EQUAL.PsiBa.Dot_pA.Dot_pB.Dot_rA.Dot_rBA.Dot_rBa.Dot = mark(occupancy_input_file, model = "2SpecConOccup", 
-                                                                               model.parameters = list(PsiA = list(formula = ~1, link = "sin"),  # occupancy species A
-                                                                                                       PsiBA = list(formula = ~1, link = "sin", share=TRUE),  # occupancy species B, given A present
-                                                                                                       # The share=TRUE statment here defines PsiBA = PsiBa -- note that PsiBa needs to be deleted from model statement
-                                                                                                       pA = list(formula = ~1),  # detection probability species A, given B absent
-                                                                                                       pB = list(formula = ~1),  # detection probability species B, given A absent
-                                                                                                       rA = list(formula = ~1),  # detection probability species A, given both A and B present
-                                                                                                       rBA = list(formula = ~1),  # detection probability species B, given both A and B present and A detected
-                                                                                                       rBa = list(formula = ~1)  # detection probability species B, given both A and B present and A not detected
-                                                                               ), options = "SIMANNEAL")  # end statement
+                                                                               model.parameters = list(PsiA = list(formula = ~1, link = "sin"), 
+                                                                                                       PsiBA = list(formula = ~1, link = "sin", share=TRUE), 
+                                                                                                       pA = list(formula = ~1),  
+                                                                                                       pB = list(formula = ~1), 
+                                                                                                       rA = list(formula = ~1),  
+                                                                                                       rBA = list(formula = ~1),  
+                                                                                                       rBa = list(formula = ~1) 
+                                                                               ), options = "SIMANNEAL") 
 
 # Summarize all of the models in an AIC table
 
-multiple.model.results = collect.models()  # collect all models from above
+multiple.model.results = collect.models()  
 multiple.model.results$model.table=model.table(multiple.model.results,model.name=F)
-# call results to see summary table
-options(width = 200)  # creates wider window to display results so that they do not wrap in R console
-multiple.model.results  # Note that model numbers in output table are numbered alphabetically and do not correspond with model number labels above
+options(width = 200)
+multiple.model.results 
 
 # Run for top model
-PsiA.Dot_PsiBA.Dot.EQUAL.PsiBa.Dot_pA.Dot_pB.Dot_rA.Dot_rBA.Dot_rBa.Dot$results$beta  # beta estimates
-PsiA.Dot_PsiBA.Dot.EQUAL.PsiBa.Dot_pA.Dot_pB.Dot_rA.Dot_rBA.Dot_rBa.Dot$results$real  # real estimates
-PsiA.Dot_PsiBA.Dot.EQUAL.PsiBa.Dot_pA.Dot_pB.Dot_rA.Dot_rBA.Dot_rBa.Dot$results$derived  # derived estimates - occupancy of both species is in here
+PsiA.Dot_PsiBA.Dot.EQUAL.PsiBa.Dot_pA.Dot_pB.Dot_rA.Dot_rBA.Dot_rBa.Dot$results$beta  
+PsiA.Dot_PsiBA.Dot.EQUAL.PsiBa.Dot_pA.Dot_pB.Dot_rA.Dot_rBA.Dot_rBa.Dot$results$real 
+PsiA.Dot_PsiBA.Dot.EQUAL.PsiBa.Dot_pA.Dot_pB.Dot_rA.Dot_rBA.Dot_rBa.Dot$results$derived  #occupancy of both species is in here
 
