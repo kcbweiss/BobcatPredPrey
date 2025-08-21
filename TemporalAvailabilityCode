@@ -1,1 +1,8 @@
-#### Install R packages
+#### Install R packages ####
+library(overlap)
+library(beepr)
+library(dplyr)
+
+#### Upload activity data and organize as needed ####
+
+activity_data2 = read.table("C:\\filepath\\activity.txt", header = TRUE)
