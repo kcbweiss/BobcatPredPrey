@@ -8,5 +8,5 @@ The following code utilizes the following steps:
 4. Running logit regression models to assess which model of availability (in space, time, or space/time) best predicts prey consumption, as defined via the frequency of scats that contain prey remains in the same study areas. Note: logit regression used, since scat values are constrained between 0-1 (0%-100% of scats) (Logit Linear Models Code)
 5. Running Pearson's correlations to assess the relationship between prey consumption and prey availability (Correlations and Figures Code)
 
-Note: Jesse Lewis (Arizona State University), Austin Green (Sageland Collaborative and University of Utah), and Mason Fidino (Lincoln Park Zoo) helped with various aspects of the presented code.
+Jesse Lewis (Arizona State University), Austin Green (Sageland Collaborative and University of Utah), and Mason Fidino (Lincoln Park Zoo) all helped with various aspects of the presented code.
 
