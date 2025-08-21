@@ -1,0 +1,82 @@
+#### This code includes how to calculate the correlations, as well as create the figures associated with the data
+
+#### Install pacakges ####
+library(ggplot2)
+library(ggpubr)
+library(msm)
+library(dplyr)
+
+#### The following should be conducted for each comparison in each strata assessed, as well as for both biomas (FOB) and frequency of occurrence (FO), using the top model for each comparison found in Step 4. Across all sites and using FOB is demonstrated below:
+
+# Input data set
+test <- read.csv(file = "Dataset.csv", header = T, stringsAsFactors = F)
+
+# Create figure
+
+
+set.seed(51)
+
+x <- test$Dhat4
+
+y <- test$FOB_per100
+
+range(y)
+
+newdat <- data.frame(x = seq(-1,1, 0.01))
+
+y_logit <- log(y / (1 - y))
+
+m2 <- lm(y_logit ~ x)
+
+m2_pred <-  predict(m2,newdata = newdat, interval = "confidence")
+
+# convert back to real scale
+
+m2_pred <- plogis(m2_pred)
+
+plot(m2_pred[,1] ~ newdat$x,
+  ylim = c(0, 0.6),
+  xlim = c(0,1),
+  type = "l",
+  lwd = 3,
+  bty = "l",
+  las = 1,
+  xlab = "Temporal Availability",
+  ylab = "Frequency of Biomass"
+  )
+
+colors <- c("#999999", "#E69F00", "#56B4E9", "#009E73")
+colors <- colors[factor(test$Prey)]
+
+shapes <- c(15, 16, 17, 18)
+shapes <- shapes[factor(test$Grid)]
+
+
+points(
+  x = x,
+  y = y,
+  pch = shapes,
+  col = colors,
+  cex = 1.2
+  )
+
+
+lines(
+  x = newdat$x,
+  y = m2_pred[,2],
+  lty = 2,
+  lwd = 2
+)
+
+lines(
+  x = newdat$x,
+  y = m2_pred[,3],
+  lty = 2,
+  lwd = 2
+)
+
+
+legend(0.2,0.65, legend = c("Birds", "Cottontail Rabbits", "Nocturnal Rodents", "Squirrels"), pch = 16, col = c("#999999", "#E69F00", "#56B4E9", "#009E73"), bty = "n")
+
+legend(-0.03,0.65, legend = c("FR Wildland", "FR WUI", "WS Exurban", "WS Wildland"), pch = c(15, 16, 17, 18), bty = "n")
+
